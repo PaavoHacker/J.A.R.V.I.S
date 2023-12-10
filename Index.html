@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Assistant</title>
+</head>
+<body>
+  <h1>Voice Assistant</h1>
+  <p id="output"></p>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const outputElement = document.getElementById('output');
+
+      // Check if the browser supports the Web Speech API
+      if ('speechSynthesis' in window && 'SpeechRecognition' in window) {
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          outputElement.textContent = `You said: ${transcript}`;
+
+          // Your virtual assistant logic goes here
+          // You can add if statements or switch cases to perform actions based on the recognized speech
+        };
+
+        recognition.onerror = (event) => {
+          outputElement.textContent = 'Error recognizing speech. Please try again.';
+        };
+
+        document.addEventListener('click', () => {
+          recognition.start();
+          outputElement.textContent = 'Listening...';
+        });
+      } else {
+        outputElement.textContent = 'Your browser does not support the Web Speech API. Please use a supported browser.';
+      }
+    });
+  </script>
+</body>
+</html>
